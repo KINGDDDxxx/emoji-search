@@ -11,25 +11,25 @@ pipeline {
 
     stage('Install') {
       steps {
-        sh 'yarn install'
+        sh 'npm install'
       }
     }
 
     stage('Build') {
       steps {
-        sh 'yarn build'
+        sh 'npm run build'
       }
     }
 
     stage('Test') {
       steps {
-        sh 'yarn test || echo "אין בדיקות"'
+        sh 'npm test || echo "אין בדיקות"'
       }
     }
 
     stage('Start (לצורכי DEV)') {
       steps {
-        sh 'yarn start & sleep 10'
+        sh 'npm start & sleep 10'
       }
     }
   }
