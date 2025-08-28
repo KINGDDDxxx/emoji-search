@@ -1,16 +1,15 @@
-# ===== build stage =====
+# שלב 1 – build
 FROM node:16-alpine AS build
+
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 COPY . .
-# אם יש לך "homepage": "/emoji-search/" ב-package.json ועדיף לשרת ב-root,
-# שנה אותו ל- "." או מחק את השדה לגמרי, ואז:
 RUN npm run build
 
-# ===== run stage =====
+# שלב 2 – serve עם nginx
 FROM nginx:alpine
-# נגיש את הבילד
-COPY --from=build /app/build/ /usr/share/nginx/html/
-# nginx כבר משרת מ-/usr/share/nginx/html על פורט 80
+COPY --from=build /app/build /usr/share/nginx/html
+
 EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

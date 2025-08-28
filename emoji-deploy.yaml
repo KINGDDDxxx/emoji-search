@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emoji-search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emoji-search
+  template:
+    metadata:
+      labels:
+        app: emoji-search
+    spec:
+      containers:
+        - name: emoji-search
+          image: localhost/emoji-search:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emoji-search-service
+spec:
+  selector:
+    app: emoji-search
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
